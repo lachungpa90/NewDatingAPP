@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DatingApp.API.Data;
 using DatingApp.API.Entity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,13 +19,15 @@ namespace DatingApp.API.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task< ActionResult <IEnumerable<AppUser>>> GetUsers()
         {
             return await _dataContext.Users.ToListAsync();
 
 
         }
-        [HttpGet("{id}")]
+        [Authorize]
+        [HttpGet("{id}")]        
         public async Task<ActionResult<AppUser>> GetUser(int id)
         {
             return await _dataContext.Users.FindAsync(id);
